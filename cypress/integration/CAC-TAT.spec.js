@@ -11,7 +11,6 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('#firstName').type('Renato')
         cy.get('#lastName').type('Augusto')
         cy.get('#email').type('ra8@email.com')
-        cy.get('#phone').type('11988888888')
         cy.get('#open-text-area').type('Teste', { deley: 0 })
         cy.get('button[type="submit"]').click()
 
@@ -25,7 +24,6 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('#open-text-area').type('Teste', { deley: 0 })
         
         cy.get('button[type="submit"]').click()
-
         cy.get('.error').should('be.visible')
     })
     it('campo telefone continua vazio quando preenchido com valor não-numerico)', function() {
@@ -44,11 +42,19 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('button[type="submit"]').click()
         cy.get('.error').should('be.visible')
     })
-    it.only('preenche e limpa os campos nome, sobrenome, email e telefone', function() {
+    it('preenche e limpa os campos nome', function() {
         cy.get('#firstName')
           .type('Renato')
           .should('have.value', 'Renato')
           .clear()
           .should('have.value', '')
+    })
+    it('exibe mensagem de erro ao submeter o formulário sem preencher os campos obrigatório', function() {
+        cy.get('button[type="submit"]').click()
+        cy.get('.error').should('be.visible')
+    })
+    it.only('envia o formuário com sucesso usando um comando customizado', function() {
+        cy.fillMandatoryFieldsAndSubmit()
+        cy.get('.success').should('be.visible')
     })
   }) 
